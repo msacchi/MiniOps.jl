@@ -1,0 +1,14 @@
+name = "MiniOps"
+uuid = "af2dcb7c-2195-40b8-81d3-f942299158c3"
+authors = ["mauricio D Sacchi "]
+version = "0.1.0"
+
+[deps]
+FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+
+[compat]
+FFTW = "1.10.0"
+LinearAlgebra = "1.11.0"
+Test = "1.11.0"
