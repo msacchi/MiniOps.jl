@@ -11,12 +11,12 @@ L  = R * F * A
 z  = L * x
 ```
 
-where `A`, `F`, `R`, … are linear **operators**, not matrices.
+where `A`, `F`, `R`, … are linear **operators**, not matrices. 
 
 The goals:
 
 - Minimal but powerful abstraction  
-- Matrix-free forward/adjoint operators  
+- Matrix-free forward/adjoint operators 
 - Shape-agnostic (1D, 2D, ND arrays)  
 - Real/complex type-agnostic  
 - Clean algebra: composition, adjoint, scalar multiplication  
@@ -26,9 +26,48 @@ The goals:
   - sampling
   - scaling & diagonal ops
   - FFT / inverse FFT
-- Diagnostics: adjoint test, linearity test, norm estimate
+- Diagnostics: adjoint test, linearity test, norm estimate (maximin eigenvalue of A'A)
 
----
+MiniOps supports two design families of linear operators:
+
+ - Size-agnostic operators (generic, work on any array)
+ - Size-fixed operators (optimized, assume a known grid)
+
+Both approaches have advantages and trade-offs. 
+
+Size-Agnostic Operators: A size-agnostic operator does not know the shape of the input a priori.
+It simply takes whatever array you give it and applies the transform.
+Example: unitary FFT defined as closures:
+
+```julia
+F = fft_op()          # works for any shape
+y = F * x
+x2 = F' * y
+```
+
+Size-Fixed (Planned) Operators: A size-fixed operator stores shape information at construction time.
+This enables precomputation and better performance.
+
+```julia
+F = fft_op(x0)        # remembers size(x0)
+y = F * x
+```
+When to Use Which Approach
+
+Use size-agnostic operators for:
+
+- Classroom demonstrations.
+- Quick experiments.
+- Code that must accept arbitrary input.
+
+Use size-fixed operators for:
+
+- Production solvers.
+- Iterative schemes (ISTA, FISTA, CG, LSQR).
+- Full waveform inversion, RTM, Radon transforms and any operator used inside a loop called many times
+
+
+
 
 # 1. Installation & Usage
 
@@ -253,11 +292,4 @@ Pkg.test("MiniOps")
 
 ---
 
-# 9. Design Notes
-
-- Matrix-free  
-- Shape-agnostic  
-- Type-agnostic  
-- Explicit algebra  
-- Ideal for FWI, tomography, deconvolution, compressed sensing  
 
