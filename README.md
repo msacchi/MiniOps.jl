@@ -229,7 +229,7 @@ Checks linearity.
 ---
 
 ## 5.3 `opnorm_power(A, x0)`
-Power-method estimate of ‖A‖₂.
+Power-method estimate of the spectral norm sn=‖A‖₂. Maximum eig of A'A is  sn²
 
 ---
 
