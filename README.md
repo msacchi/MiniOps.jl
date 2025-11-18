@@ -217,9 +217,9 @@ X2 = F' * Y
 ## 5.1 `adjoint_test(A, x, y)`
 Validates inner-product identity:
 
-\[
+$$
 \langle Ax, y \rangle \approx \langle x, A'y \rangle.
-\]
+$$
 
 ---
 
