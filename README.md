@@ -238,7 +238,20 @@ Tests whether `A ≈ A'`.
 
 ---
 
-# 6. Example: Linear Inverse Problem
+# 6. Solvers
+
+---
+
+## 6.1 `ista(A, y, u0, mu, step_size; niter=100, verbose=false)`
+Iterative Soft-Thresholding Algorithm ||A x - y||_2^2 + mu ||x||_1 
+
+---
+
+## 6.2 `cgls(A, b, mu, x0; tol=1e-6, max_iter=1000)`
+Conjugate Gradients to minmize ||A x-b||_2^2 + mu ||x||_2^2
+
+
+# 7. Example: Linear Inverse Problem
 
 ```julia
 using MiniOps
