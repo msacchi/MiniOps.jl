@@ -14,7 +14,10 @@ export Op,
        adjoint_test,
        linearity_test,
        opnorm_power,
-       is_selfadjoint
+       is_selfadjoint,
+       soft_threshold,
+       ista,
+       cgls
 
 # 1) Define Op first
 include("core.jl")
@@ -30,6 +33,9 @@ include("fftops.jl")
 
 # 4) Diagnostics using Op and the operators
 include("diagnostics.jl")
+
+# 5) Solvers
+include("solvers.jl")
 
 end # module
 
