@@ -17,7 +17,9 @@ export Op,
        is_selfadjoint,
        soft_threshold,
        ista,
-       cgls
+       cgls,
+       seismic_wavelet,
+       edge_cosine_taper
 
 # 1) Define Op first
 include("core.jl")
@@ -36,6 +38,9 @@ include("diagnostics.jl")
 
 # 5) Solvers
 include("solvers.jl")
+
+# 6) Extras
+include("extras.jl")
 
 end # module
 
