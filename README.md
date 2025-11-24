@@ -212,6 +212,13 @@ X2 = F' * Y
 
 ---
 
+
+
+P = pad_op( (4,4,4), (2,2,2), (2,2,2))
+
+
+---
+
 # 5. Diagnostics
 
 ## 5.1 `adjoint_test(A, x, y)`
