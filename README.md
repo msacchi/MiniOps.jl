@@ -26,7 +26,7 @@ The goals:
   - sampling
   - scaling & diagonal ops
   - FFT / inverse FFT
-- Diagnostics: adjoint test, linearity test, norm estimate (maximin eigenvalue of A'A)
+- Diagnostics: adjoint test, linearity test, norm estimate (max  eigenvalue of A'A)
 
 MiniOps supports two design families of linear operators:
 
@@ -100,8 +100,8 @@ An `Op` represents a matrix-free linear operator:
 
 ```julia
 struct Op{F,FT}
-    f::F      # forward  x ↦ A*x
-    ft::FT    # adjoint  y ↦ A'*y
+    f::F      # forward  x -> A*x
+    ft::FT    # adjoint  y -> A'*y
     m::Int    # number of elements in codomain (optional)
     n::Int    # number of elements in domain   (optional)
     name::Symbol
@@ -212,10 +212,14 @@ X2 = F' * Y
 
 ---
 
+## 4.7 `pad_op()`
 
-
+```julia
 P = pad_op( (4,4,4), (2,2,2), (2,2,2))
-
+A = P*randn(4,4,4)
+# A has been padded with 2 samples at beggining and end
+# of each dim
+```
 
 ---
 
@@ -257,32 +261,6 @@ Iterative Soft-Thresholding Algorithm ||A x - y||_2^2 + mu ||x||_1
 ## 6.2 `cgls(A, b, mu, x0; tol=1e-6, max_iter=1000)`
 Conjugate Gradients to minmize ||A x-b||_2^2 + mu ||x||_2^2
 
-
-# 7. Example: Linear Inverse Problem
-
-```julia
-using MiniOps
-
-nx, ny = 128, 128
-full_size = (nx, ny)
-
-h = [1.0, 2.0, -1.0]
-A = conv1d_cols_op(h)
-F = fft_op()
-
-mask = rand(nx*ny) .> 0.6
-idx  = findall(mask)
-R = sampling_op(idx, full_size)
-
-L = R * F * A
-
-x_true = zeros(ComplexF64,nx,ny)
-x_true[2,4] = 1 + 2im
-x_true[4,3] = -1 - 1im
-
-y = L * x_true
-```
-
 ---
 
 # 7. Extending MiniOps
@@ -303,12 +281,10 @@ adjoint_test(A, randn(size), randn(size))
 
 ---
 
-# 8. Running Tests
+# 8. More
 
-```julia
-using Pkg
-Pkg.test("MiniOps")
-```
+Check `00_demo.ipynb' and `01_demo.ipynb'
+
 
 ---
 
