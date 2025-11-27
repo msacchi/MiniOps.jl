@@ -165,7 +165,7 @@ F = with_shape(F, X0)
 
 # 4. Built-in Operators
 
-## 4.1 `conv1d_op(h)`
+### 4.1 `conv1d_op(h)`
 1D convolution operator.
 
 ```julia
@@ -175,7 +175,7 @@ y = A * x
 
 ---
 
-## 4.2 `conv1d_cols_op(h)`
+### 4.2 `conv1d_cols_op(h)`
 Columnwise convolution (applied to each trace).
 
 ```julia
@@ -186,22 +186,22 @@ Z = A' * Y
 
 ---
 
-## 4.3 `sampling_op(idx, full_size)`
+### 4.3 `sampling_op(idx, full_size)`
 Generalized sampling (masking): forward extracts samples, adjoint scatters back.
 
 ---
 
-## 4.4 `scaling_op(α)`
+### 4.4 `scaling_op(α)`
 Scalar multiplication operator.
 
 ---
 
-## 4.5 `diag_op(w)`
+### 4.5 `diag_op(w)`
 Diagonal operator: `y = w .* x`
 
 ---
 
-## 4.6 `fft_op()`
+### 4.6 `fft_op()`
 Matrix-free FFT/bFFT operator.
 
 ```julia
@@ -212,7 +212,7 @@ X2 = F' * Y
 
 ---
 
-## 4.7 `pad_op()`
+### 4.7 `pad_op()`
 
 ```julia
 P = pad_op( (4,4,4), (2,2,2), (2,2,2))
@@ -225,7 +225,7 @@ A = P*randn(4,4,4)
 
 # 5. Diagnostics
 
-## 5.1 `adjoint_test(A, x, y)`
+### 5.1 `adjoint_test(A, x, y)`
 Validates inner-product identity:
 
 $$
@@ -234,17 +234,17 @@ $$
 
 ---
 
-## 5.2 `linearity_test(A, x, z)`
+### 5.2 `linearity_test(A, x, z)`
 Checks linearity.
 
 ---
 
-## 5.3 `opnorm_power(A, x0)`
+### 5.3 `opnorm_power(A, x0)`
 Power-method estimate of the spectral norm sn=‖A‖₂. Maximum eig of A'A is  sn²
 
 ---
 
-## 5.4 `is_selfadjoint(A, x)`
+### 5.4 `is_selfadjoint(A, x)`
 Tests whether `A ≈ A'`.
 
 ---
@@ -253,12 +253,12 @@ Tests whether `A ≈ A'`.
 
 ---
 
-## 6.1 `ista(A, y, u0, mu, step_size; niter=100, verbose=false)`
+### 6.1 `ista(A, y, u0, mu, step_size; niter=100, verbose=false)`
 Iterative Soft-Thresholding Algorithm ||A x - y||_2^2 + mu ||x||_1 
 
 ---
 
-## 6.2 `cgls(A, b, mu, x0; tol=1e-6, max_iter=1000)`
+### 6.2 `cgls(A, b, mu, x0; tol=1e-6, max_iter=1000)`
 Conjugate Gradients to minmize ||A x-b||_2^2 + mu ||x||_2^2
 
 ---
@@ -283,7 +283,7 @@ adjoint_test(A, randn(size), randn(size))
 
 # 8. More
 
-Check `00_demo.ipynb' and `01_demo.ipynb'
+Check `00_demo.ipynb`, `01_demo.ipynb`,  `02_demo.ipynb`
 
 
 ---
