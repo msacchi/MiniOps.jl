@@ -11,6 +11,7 @@ export Op,
        diag_op,
        fft_op,
        pad_op,
+       radon_tx_op,
        with_shape, 
        adjoint_test,
        linearity_test,
@@ -33,6 +34,7 @@ include("conv.jl")
 include("sampling.jl")
 include("scaling.jl")
 include("fftops.jl")
+include("radon.jl")
 
 # 4) Diagnostics using Op and the operators
 include("diagnostics.jl")
