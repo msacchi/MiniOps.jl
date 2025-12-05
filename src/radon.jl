@@ -198,13 +198,14 @@ Return a MiniOps `Op` for the parabolic Radon transform with
 linear time interpolation, operating directly on matrices.
 
 Domain (model):  m(τ, q)  :: Matrix{T}   (nt × nq)
+
 Range (data):    d(t, h)  :: Matrix{T}   (nt × nh)
 
 Forward:
-    d = R * m          # calls `radon_tx_forward_lin`
+    d = R * m           # calls `radon_tx_forward_lin`
 
 Adjoint:
-    m = R' * d         # calls `radon_tx_adjoint_lin`
+    ma = R' * d         # calls `radon_tx_adjoint_lin`
 """
 function radon_tx_op(
     dt::T,

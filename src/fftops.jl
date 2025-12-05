@@ -1,4 +1,51 @@
-# FFT operator on any array (1D, 2D, ND)
+"""
+    fft_op(; unitary = true)
+    fft_op(x0; unitary = true)
+
+Construct a MiniOps `Op` that applies the ND discrete Fourier transform
+(DFT) and its adjoint.
+
+There are two variants:
+
+  • `fft_op(; unitary = true)`
+
+    Returns an operator that uses `fft` / `bfft` directly. This is a
+    convenient, non-planned FFT operator that can be applied to any
+    vector `x` (length determined at apply time):
+
+    ```julia
+    F = fft_op()          # or fft_op(unitary = false)
+    y = F * x             # forward FFT
+    xrec = F' * y         # adjoint (inverse-side transform)
+    ```
+
+    Since the length is not fixed at construction, the operator sizes
+    `m, n` are set to `-1` as “unknown” placeholders.
+
+  • `fft_op(x0; unitary = true)`
+
+    Returns an operator that uses FFTW plans created from the prototype
+    vector `x0`. This is more efficient when applying the FFT repeatedly
+    to vectors of the same length and element type:
+
+    ```julia
+    F = fft_op(x0)        # plans fft and bfft for length(x0)
+    y = F * x             # x must have length(x0)
+    xrec = F' * y
+    ```
+
+    In this case, the operator is square with fixed size
+    `m = n = length(x0)`.
+
+### Scaling convention
+
+If `unitary = true` (default):
+
+  - Forward: `y = fft(x) / sqrt(M)`
+  - Adjoint: `x = bfft(y) / sqrt(M)`
+
+where `M = length(x)` (or `length(x0)` for the planned version).
+"""
 function fft_op(; unitary = true)
     if unitary
         f  = x -> begin

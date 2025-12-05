@@ -32,7 +32,24 @@ function adjoint_conv(y::AbstractVector, h::AbstractVector)
     return x
 end
 
-# Public constructor: convolution operator with fixed kernel h (1D vector)
+
+"""
+    conv1d_op(h)
+
+Return a MiniOps `Op` for 1D convolution/crosscorrelation with vector h.
+
+Domain (model):  x  :: AbstractVector  (nx x 1)
+
+Range (data):    y  :: AbstractVector  (ny × 1)
+
+h is lenght nh and x is lenght nx, then y is lenght nx+ny-1
+
+If `C = conv1d_op(h)`, then 
+
+Forward: `y = C * x`        # Convolution of h with h         
+
+Adjoint: `xa = C' * y`      # Crosscorrelation of h with y
+"""
 function conv1d_op(h::AbstractVector)
     hvec = collect(h)
     f  = x -> forward_conv(x, hvec)
@@ -82,6 +99,24 @@ function adjoint_conv_cols(Y::AbstractMatrix, h::AbstractVector)
     return X
 end
 
+"""
+    conv1d_cols_op(h)
+
+Return a MiniOps `Op` for 1D multichannel convolution/crosscorrelation with 
+vector h. It repeats 1D conv/crosscorrelation over columns.
+
+Domain (model):  X  :: AbstractMatrix  (nx x ntraces)
+
+Range (data):    Y  :: AbstractMatrix (ny × traces)
+
+h is lenght nh and x is (nx x ntraces), then y is (nx+ny-1 x ntraces)
+
+If `C = conv1d_cols_op(h)`, then
+
+Forward:  `Y = C * X`          # Convolution of h with columns of X        
+
+Adjoint:  `Xa = C' * Y`        # Crosscorrelation of h with columns of Y
+"""
 function conv1d_cols_op(h::AbstractVector)
     hvec = collect(h)
 
