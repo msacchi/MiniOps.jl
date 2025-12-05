@@ -22,6 +22,7 @@ export Op,
        cgls,
        seismic_wavelet,
        edge_cosine_taper
+    
 
 # 1) Define Op first
 include("core.jl")

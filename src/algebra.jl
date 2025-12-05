@@ -15,7 +15,7 @@ end
 # Scalar times operator
 function Base.:*(c::Number, A::Op)
     f  = x -> c .* (A * x)
-    ft = y -> c .* (A' * y)
+    ft = y -> conj(c) .* (A' * y)               # Ok if real too
     return Op(f, ft; m = A.m, n = A.n,
               name = Symbol(c, "*", A.name))
 end
