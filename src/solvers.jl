@@ -1,4 +1,29 @@
+"""
+    soft_threshold(u, tau) -> v
 
+Apply soft-thresholding (shrinkage) to an array.
+
+Each element of `u` is shrunk toward zero according to the threshold
+parameter `tau`. Values with magnitude below `tau` are mapped to zero,
+and larger values are reduced in magnitude.
+
+Arguments
+---------
+u   : Input array (real or complex).
+tau : Non-negative threshold parameter.
+
+Returns
+-------
+v : Array
+    Thresholded output of the same shape as `u`.
+
+Notes
+-----
+- For tau = 0, the input is returned unchanged.
+- The function is applied elementwise.
+- Division by zero is avoided internally.
+- This is the proximal operator for the L1 norm.
+"""
 function soft_threshold(u, tau)
     # tau >= 0 (scalar)
     amp    = abs.(u)
@@ -8,19 +33,38 @@ function soft_threshold(u, tau)
 end
 
 
-# ISTA: solves
-#   min_u  0.5 * ||A*u - y||_2^2 + mu * ||u||_1
-#
-# Inputs:
-#   A         - MiniOps.Op operator
-#   y         - data (same shape as A*u)
-#   u0        - initial model (same shape as solution u)
-#   mu        - L1 penalty weight
-#   step_size - gradient step size
-#   niter     - number of iterations
-#
-# Output:
-#   u         - ISTA solution
+
+"""
+    ista(A, y, u0, mu, step_size; niter = 100, verbose = false) -> u
+
+Solve an L1-regularized least squares problem using ISTA
+(Iterative Shrinkage-Thresholding Algorithm).
+
+The method alternates between a gradient descent step for the data
+misfit term and a soft-thresholding step that promotes sparsity.
+
+Arguments
+---------
+A         : Linear operator (MiniOps.Op).
+y         : Observed data.
+u0        : Initial estimate of the solution.
+mu        : L1 regularization weight.
+step_size : Gradient descent step size.
+niter     : Number of iterations (default = 100).
+verbose   : Print convergence information every 20 iterations.
+
+Returns
+-------
+u : Array
+    Estimated solution after `niter` iterations.
+
+Notes
+-----
+- The step size should be smaller than 1 / ||A||² for convergence.
+- Uses soft_threshold as the proximal operator.
+- Works for vectors or multidimensional arrays.
+- Often used in sparse reconstruction and inverse problems.
+"""
 function ista(A, y, u0, mu, step_size; niter=100, verbose=false)
     u = copy(u0)
 
@@ -45,21 +89,47 @@ end
 
 
 
+
 """
-cgls(A, b, mu, x0; tol=1e-6, max_iter=1000)
+    cgls(A, b, mu, x0; tol = 1e-6, max_iter = 1000) -> x
 
-Solve the quadratic regularized least-squares problem via the Conjugate Gradient Least Squares (CGLS) method.
+Solve a quadratic regularized least squares problem using the
+Conjugate Gradient Least Squares (CGLS) algorithm.
 
-# Arguments:
-- A: The matrix in the least-squares problem.
-- b: The right-hand side vector.
-- mu: The regularization parameter.
-- x0: The initial guess for the solution.
-- tol: The tolerance for convergence (default is 1e-6).
-- max_iter: The maximum number of iterations (default is 1000).
+This method minimizes a least-squares objective with Tikhonov-style
+regularization by iteratively solving the normal equations using
+conjugate gradients.
 
-# Returns:
-- x: The computed solution.
+Arguments
+---------
+A         : Linear operator or matrix.
+b         : Right-hand side vector or array.
+mu        : Regularization parameter.
+x0        : Initial guess for the solution.
+tol       : Convergence tolerance (default = 1e-6).
+max_iter  : Maximum number of iterations (default = 1000).
+
+Returns
+-------
+x : Array
+    Estimated solution.
+
+Notes
+-----
+- Works with both matrices and operator-based solvers.
+- Particularly useful for large inverse problems.
+- Larger values of mu enforce stronger regularization.
+- Convergence is based on the gradient norm.
+
+Example
+-------
+```julia	
+# Decon example
+A = conv1d_op(randn(3))
+x_true = randn(10);
+b = A*x_true 
+x = cgls(A, b, 0.01, zeros(size(x_true)))
+```
 """
 function cgls(A, b, mu, x0; tol=1e-6, max_iter=1000)
     r = b - A * x0           # Initial residual

@@ -82,8 +82,33 @@ function fft_op(x0; unitary = true)
     return Op(f, ft; m = M, n = M, name = :fft_planned)
 end
 
+"""
+    pad_nd(x, pad_before, pad_after) -> y
 
+Pad an N-dimensional array with zeros on each side.
 
+Each dimension of `x` is padded independently according to:
+
+- pad_before[i]: number of zeros added before dimension i
+- pad_after[i] : number of zeros added after dimension i
+
+Arguments
+---------
+x           : Input array.
+pad_before  : Tuple specifying padding before each dimension.
+pad_after   : Tuple specifying padding after each dimension.
+
+Returns
+-------
+y : Array
+    Padded output array.
+
+Notes
+-----
+- pad_before and pad_after must match ndims(x).
+- Padding is always filled with zeros.
+- Useful for FFTs, stencil operations, and boundary extension.
+"""
 function pad_nd(x::AbstractArray,
                 pad_before::NTuple{N,Int},
                 pad_after::NTuple{N,Int}) where {N}
@@ -100,6 +125,31 @@ function pad_nd(x::AbstractArray,
     return y
 end
 
+
+"""
+    unpad_nd(y, pad_before, pad_after) -> x
+
+Remove padding from an N-dimensional array.
+
+This function extracts the interior region defined by the padding
+parameters and returns the unpadded result.
+
+Arguments
+---------
+y           : Padded input array.
+pad_before  : Tuple specifying padding before each dimension.
+pad_after   : Tuple specifying padding after each dimension.
+
+Returns
+-------
+x : Array
+    Unpadded output array.
+
+Notes
+-----
+- Padding sizes must be valid for the given array dimensions.
+- This is the adjoint of pad_nd under the Euclidean inner product.
+"""
 function unpad_nd(y::AbstractArray,
                   pad_before::NTuple{N,Int},
                   pad_after::NTuple{N,Int}) where {N}
@@ -118,14 +168,53 @@ function unpad_nd(y::AbstractArray,
     return x
 end
 
+
 """
+    pad_op(sz_in, pad_before, pad_after) -> Op
+    pad_op(x0,    pad_before, pad_after) -> Op
+
+Create an N-dimensional padding operator.
+
+Two usage modes are supported:
+
+1) Size-based constructor
+
     pad_op(sz_in, pad_before, pad_after)
 
-Create an N-D padding operator for arrays of size `sz_in`.
+    - `sz_in` is a tuple specifying the input array size.
+    - The operator maps arrays of size `sz_in` to a padded array whose
+      shape is determined by `pad_before` and `pad_after`.
 
-- `sz_in`      :: NTuple{N,Int}
-- `pad_before` :: NTuple{N,Int}
-- `pad_after`  :: NTuple{N,Int}
+2) Prototype-based constructor
+
+    pad_op(x0, pad_before, pad_after)
+
+    - `x0` is a prototype array that defines the input size.
+    - Equivalent to calling:
+
+          pad_op(size(x0), pad_before, pad_after)
+
+Arguments
+---------
+
+sz_in / x0  : Input array size (tuple) or prototype array.
+
+pad_before  : Tuple specifying zero-padding before each dimension.
+
+pad_after   : Tuple specifying zero-padding after each dimension.
+
+Returns
+-------
+Op
+    A MiniOps operator representing multi-dimensional zero-padding.
+
+Notes
+-----
+- The forward operation applies zero-padding.
+- The adjoint operation removes padding (extracts the interior).
+- Operator dimensions `m` and `n` correspond to the flattened output
+  and input sizes respectively.
+- Useful for FFTs, PDE solvers, convolution, and boundary handling.
 """
 function pad_op(sz_in::NTuple{N,Int},
                 pad_before::NTuple{N,Int},
@@ -133,12 +222,10 @@ function pad_op(sz_in::NTuple{N,Int},
 
     @assert length(pad_before) == N == length(pad_after)
 
-    # Output size of padded array
     sz_out = ntuple(i -> pad_before[i] + sz_in[i] + pad_after[i], N)
 
-    # Flattened sizes for Op bookkeeping
-    n = prod(sz_in)   # input dof
-    m = prod(sz_out)  # output dof
+    n = prod(sz_in)
+    m = prod(sz_out)
 
     f = function (x)
         @assert size(x) == sz_in
@@ -153,10 +240,9 @@ function pad_op(sz_in::NTuple{N,Int},
     return Op(f, ft; m = m, n = n, name = :pad_op)
 end
 
-# Convenience: pass a prototype array instead of sz_in
+
+# Convenience: pass a prototype array instead of size tuple
 pad_op(x0::AbstractArray,
        pad_before::NTuple{N,Int},
        pad_after::NTuple{N,Int}) where {N} =
     pad_op(size(x0), pad_before, pad_after)
-
-
