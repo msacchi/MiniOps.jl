@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>MiniOps.jl</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>MiniOps.jl</h1>
+
+<p>
+Matrix-free linear operators for inverse problems in Julia.
+</p>
+
+<p>
+MiniOps is based on a simple idea:
+<strong>operators are defined by forward and adjoint actions, not matrices.</strong>
+</p>
+
+<h2>Features</h2>
+<ul>
+<li>Forward / adjoint operators</li>
+<li>Operator composition</li>
+<li>Adjoint testing</li>
+<li>FFT-based operators</li>
+<li>Radon transforms (explicit and chirp-based)</li>
+</ul>
+
+<h2>Quick Example</h2>
+<pre><code>
+using MiniOps
+
+A = fft_op()
+y = A * x
+xadj = A' * y
+</code></pre>
+
+<h2>Pages</h2>
+<ul>
+<li><a href="philosophy.html">Philosophy</a></li>
+<li><a href="operators.html">Operators</a></li>
+<li><a href="examples.html">Examples</a></li>
+</ul>
+
+<h2>Source</h2>
+<p>
+<a href="https://github.com/YOUR_USERNAME/MiniOps.jl">
+GitHub Repository
+</a>
+</p>
+
+</body>
+</html>
