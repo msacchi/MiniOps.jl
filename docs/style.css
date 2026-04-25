@@ -1,20 +1,75 @@
-body {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: auto;
-    line-height: 1.6;
-}
 
-h1, h2 {
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    margin: 0;
+    line-height: 1.6;
+    background: #f7f9fc;
     color: #2c3e50;
 }
 
+/* Header */
+header {
+    background: #1f2a44;
+    color: white;
+    padding: 40px 20px;
+    text-align: center;
+}
+
+.subtitle {
+    opacity: 0.8;
+}
+
+/* Sections */
+section {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+}
+
+/* Code blocks */
 pre {
-    background: #f4f4f4;
-    padding: 10px;
+    background: #1e1e1e;
+    color: #f8f8f2;
+    padding: 15px;
+    border-radius: 8px;
     overflow-x: auto;
 }
 
 code {
-    color: #c7254e;
+    font-family: monospace;
+}
+
+/* Links */
+.links {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+.links a {
+    text-decoration: none;
+    color: #1f2a44;
+    font-weight: bold;
+}
+
+/* Button */
+.button {
+    background: #1f2a44;
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 6px;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 0.9em;
+    opacity: 0.7;
 }

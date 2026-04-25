@@ -1,54 +1,79 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>MiniOps.jl</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MiniOps.jl</title>
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<h1>MiniOps.jl</h1>
+<header>
+    <h1>MiniOps.jl</h1>
+    <p class="subtitle">Matrix-free operators for inverse problems in Julia</p>
+</header>
 
-<p>
-Matrix-free linear operators for inverse problems in Julia.
-</p>
+<section class="hero">
+    <h2>Operators, not matrices</h2>
+    <p>
+        MiniOps implements linear operators using forward and adjoint actions.
+        No matrices. Just clean, composable operators.
+    </p>
 
-<p>
-MiniOps is based on a simple idea:
-<strong>operators are defined by forward and adjoint actions, not matrices.</strong>
-</p>
+<pre><code>
+y = A * x
+x = A' * y
+</code></pre>
 
-<h2>Features</h2>
+</section>
+
+<section>
+<h2>Why MiniOps?</h2>
 <ul>
-<li>Forward / adjoint operators</li>
-<li>Operator composition</li>
-<li>Adjoint testing</li>
-<li>FFT-based operators</li>
-<li>Radon transforms (explicit and chirp-based)</li>
+<li>Matrix-free inverse problems</li>
+<li>Exact adjoint operators</li>
+<li>Composable operator algebra</li>
+<li>FFT-based implementations</li>
+<li>Radon transforms (explicit + chirp)</li>
 </ul>
+</section>
 
-<h2>Quick Example</h2>
+<section>
+<h2>Example</h2>
+
 <pre><code>
 using MiniOps
 
-A = fft_op()
-y = A * x
-xadj = A' * y
+R = radon_tx_tp_chirp_op(dt, x0, dx, nx, p0, dp, np)
+
+d  = R * m      # τ-p → t-x
+ma = R' * d     # adjoint
 </code></pre>
 
-<h2>Pages</h2>
-<ul>
-<li><a href="philosophy.html">Philosophy</a></li>
-<li><a href="operators.html">Operators</a></li>
-<li><a href="examples.html">Examples</a></li>
-</ul>
+</section>
 
-<h2>Source</h2>
+<section>
+<h2>Explore</h2>
+<div class="links">
+    <a href="philosophy.html">Philosophy</a>
+    <a href="operators.html">Operators</a>
+    <a href="examples.html">Examples</a>
+</div>
+</section>
+
+<section>
+<h2>Get the code</h2>
 <p>
-<a href="https://github.com/YOUR_USERNAME/MiniOps.jl">
-GitHub Repository
+<a class="button" href="https://github.com/msacchi/MiniOps.jl">
+View on GitHub
 </a>
 </p>
+</section>
+
+<footer>
+<p>MiniOps.jl — University of Alberta</p>
+</footer>
 
 </body>
 </html>
