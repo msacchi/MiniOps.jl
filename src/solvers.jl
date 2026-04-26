@@ -3,9 +3,8 @@
 
 Apply soft-thresholding (shrinkage) to an array.
 
-Each element of `u` is shrunk toward zero according to the threshold
-parameter `tau`. Values with magnitude below `tau` are mapped to zero,
-and larger values are reduced in magnitude.
+Each element of `u` is shrunk toward zero according to the threshold parameter `tau`. Values with 
+magnitude below `tau` are mapped to zero, and larger values are reduced in magnitude.
 
 Arguments
 ---------
@@ -46,16 +45,23 @@ misfit term and a soft-thresholding step that promotes sparsity.
 Arguments
 ---------
 A         : Linear operator (MiniOps.Op).
+
 y         : Observed data.
+
 u0        : Initial estimate of the solution.
+
 mu        : L1 regularization weight.
+
 step_size : Gradient descent step size.
+
 niter     : Number of iterations (default = 100).
+
 verbose   : Print convergence information every 20 iterations.
 
 Returns
 -------
 u : Array
+
     Estimated solution after `niter` iterations.
 
 Notes
@@ -103,10 +109,15 @@ conjugate gradients.
 Arguments
 ---------
 A         : Linear operator or matrix.
+
 b         : Right-hand side vector or array.
+
 mu        : Regularization parameter.
+
 x0        : Initial guess for the solution.
+
 tol       : Convergence tolerance (default = 1e-6).
+
 max_iter  : Maximum number of iterations (default = 1000).
 
 Returns

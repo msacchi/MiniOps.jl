@@ -40,6 +40,7 @@ Notes
 
 Example
 -------
+```julia 
 A = fft_op()
 x = randn(64)
 y = randn(64)
@@ -47,6 +48,7 @@ y = randn(64)
 ok, err = adjoint_test(A, x, y)
 
 println("Passed: ", ok, "   Error: ", err)
+```
 """
 function adjoint_test(A::Op, x, y; tol=1e-10)
     Ax  = A * x

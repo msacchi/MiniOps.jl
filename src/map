@@ -1,0 +1,20 @@
+
+src/
+│
+├── MiniOps.jl
+│
+├── core/
+│   ├── op.jl
+│   ├── algebra.jl
+│
+├── operators/
+│   ├── fft.jl
+│   ├── sampling.jl
+│   ├── diag.jl
+│   ├── conv.jl
+│   ├── radon.jl
+│   └── radon_chirp.jl   ← NEW
+│
+└── utils/
+    ├── tests.jl
+
